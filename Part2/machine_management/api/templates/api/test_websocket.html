@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+    <button id="sendButton">Send Test Data</button>
+    <pre id="response"></pre>
+
+    <script>
+        const socket = new WebSocket('ws://127.0.0.1:8000/ws/machines/');
+
+        socket.onopen = function(event) {
+            console.log('WebSocket connection established');
+        };
+
+        socket.onmessage = function(event) {
+            const responseElement = document.getElementById('response');
+            responseElement.innerText += `\n${event.data}`;
+        };
+
+        document.getElementById('sendButton').onclick = function() {
+            const data = JSON.stringify({ machine_id: '81258857', status: 'active' });
+            socket.send(data);
+        };
+
+        socket.onclose = function(event) {
+            console.log('WebSocket connection closed');
+        };
+    </script>
+</body>
+</html>
