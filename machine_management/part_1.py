@@ -3,19 +3,18 @@ import random
 import django
 from time import sleep
 
-# Set up Django environment
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "machine_management.settings")  # Replace with your project name
 django.setup()
 
-from api.models import Machine, Axis  # Import your models
-
+from api.models import Machine, Axis  
 def generate_machine_data(machine_id, machine_name):
     tool_capacity = 24
     tool_offset = random.uniform(5, 40)  
     feedrate = random.randint(10000, 20000)  
     tool_in_use = random.randint(1, tool_capacity)
 
-    # Use Django ORM to create or update Machine instance
+   
     machine, created = Machine.objects.update_or_create(
         machine_id=machine_id,
         defaults={
@@ -26,8 +25,7 @@ def generate_machine_data(machine_id, machine_name):
             'tool_in_use': tool_in_use
         }
     )
-    return machine  # Return the machine instance
-
+    return machine  
 def generate_axis_data(machine):
     axis_names = ['X', 'Y', 'Z', 'A', 'C']
 
@@ -41,7 +39,7 @@ def generate_axis_data(machine):
         acceleration = random.randint(100, 150)
         velocity = random.randint(40, 80)
 
-        # Use Django ORM to create or update Axis instance
+       
         axis, created = Axis.objects.update_or_create(
             machine=machine,
             axis_name=axis_name,
@@ -61,13 +59,13 @@ def generate_axis_data(machine):
 for i in range(1, 21):
     machine_id = 81258856 + i  
     machine_name = f'EMPX{i}'  
-    machine = generate_machine_data(machine_id, machine_name)  # Get the machine instance
-    generate_axis_data(machine)  # Pass the machine instance to generate axes
+    machine = generate_machine_data(machine_id, machine_name)  
+    generate_axis_data(machine)  
 
 while True:
     for i in range(1, 21):
         machine_id = 81258856 + i
-        machine = Machine.objects.get(machine_id=machine_id)  # Get the machine instance
-        generate_axis_data(machine)  # Generate new axis data for the existing machine
+        machine = Machine.objects.get(machine_id=machine_id)  
+        generate_axis_data(machine)  
     
-    sleep(900)  # Sleep for 15 minutes before the next update
+    sleep(900)  
