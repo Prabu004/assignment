@@ -37,6 +37,7 @@ class Axis(models.Model):
     homed = models.BooleanField(default=False)
     acceleration = models.FloatField()
     velocity = models.FloatField()
+    timestamp = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ('axis_name', 'machine')
